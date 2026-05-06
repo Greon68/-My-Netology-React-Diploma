@@ -38,6 +38,7 @@ export const MainMenuRight = () => {
     }
   }
 
+
   return (
     /* Контейнер  правой части главного меню */
     <div className="main-menu-right">

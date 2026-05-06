@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router";
 // import { CatalogData } from "../Home/CatalogData"
 // import { CatalogSearchData } from "./CatalogSearchData";
 
@@ -39,10 +40,21 @@ export const Catalog = () => {
   const [ productNotAvailable, setProductNotAvailable] = useState(false)
   // Лимит на количество загружаемых за один запрос элементов:
   const[limit]= useState(6);
-
-  // *************************************
   // Ошибка при загрузке данных о товарах
-  const[error, setError]= useState('')
+  const[error, setError]= useState('');
+
+    // Объект location из  useLocation()
+    let location = useLocation();
+    console.log("Catalog location - ", location);
+  
+    // Если получены данные из поля поиска главного меню,
+    // запишем их в search.title:
+    useEffect(() => {
+      // console.log("SearchCatalog location.state - ", location.state);
+      if (location.state?.valueSearch) {
+        setSearch({ title: location.state.valueSearch });
+      }
+    }, [location]);
 
   // Функция загрузки данных:
   // const fetchItems = (category, query, offset) => 

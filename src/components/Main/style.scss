@@ -1,0 +1,211 @@
+
+.main-menu,
+.main-menu-left {
+  display: flex;
+  align-items: center
+}
+
+.main-menu {
+  justify-content: space-between;
+}
+
+.main-menu-item {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+/*  Верхняя правая часть главного меню */
+.main-menu-right {
+    display: flex;
+    position: relative;
+}
+
+/* Форма с поиском в главном меню  */
+.header-controls-search-form {
+    position: absolute;
+    right: 40px;
+    /* top: calc(50% - 19px); */ 
+    display: flex;
+    width: 300px;
+    height: 38px;
+    padding: 0 20px;
+}
+
+/* input формы поиска главного меню */
+.header-controls-search-form .form-control {
+    width: 99%;
+    height: 73%;
+    color: #333333;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    font-size: 16px;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 10px #D4E4E6;
+    border-radius: 50px;
+    text-align: left;
+  
+}
+
+/* Блок иконок лупы и корзины в правой части главного меню */
+.header-controls-pics {
+    display: flex;
+    justify-content: space-between;
+    max-width: 280px;
+    margin-left: auto;
+}
+
+/* иконки в правой части главного меню */
+.header-controls-pic {
+    height: 32px;
+    width: 32px;
+    margin: 0 10px;
+    background-image: url(../img/header-controls-sprite.png);
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+/*Пояснение: background-position: 30px 80px; — 
+    изображение расположено 30px от левого края и
+    80px от верхнего края элемента. */
+
+    /* Значёк "ЛУПА" */
+.header-controls-search {
+    position: relative;
+    right: 10px;
+    z-index: 999;
+    background-position: -64px 0;
+}
+
+/* Значёк "Корзина" */
+.header-controls-cart {
+    position: relative;
+    background-position: 0 0;
+}
+
+/* Количество заказов в корзине (в красном кружке ) */
+.header-controls-cart-full {
+    position: absolute;
+    right: -10px;
+    top: -5px;
+    display: block;
+    height: 21px;
+    width: 21px;
+    font-size: 11px;
+    line-height: 21px;
+    text-align: center;
+    color: #FFFFFF;
+    border-radius: 50%;
+    background: linear-gradient(90deg, #ff65a5 1.11%, #ff8076 100%);
+    box-shadow: 0px 2px 8px rgba(255, 101, 165, 0.6), inset 0px 1px 1px #ff8076;
+}
+
+/* Banner */
+.banner {
+    position: relative;
+}
+  
+.banner-header {
+    position: absolute;
+    z-index: 5;
+    right: 0;
+    top: 42px;
+    height: 98px;
+    width: 487px;
+    font-weight: bold;
+    font-size: 48px;
+    line-height: 98px;
+    text-align: center;
+    color: #FFFFFF;
+    background: linear-gradient(270deg, rgba(161, 179, 191, 0.8) 72.59%, rgba(161, 179, 191, 0) 98.05%);
+}
+  
+/* Footer */
+.footer {
+    padding: 0 25px;
+}
+  
+.footer-pay {
+    display: flex;
+    justify-content: space-between;
+    margin: 12px auto 0;
+}
+
+.footer-pay-systems {
+    width: 46px;
+    height: 28px;
+    border: 2px solid #FFFFFF;
+    border-radius: 8px;
+    background-color: #FFFFFF;
+    background-repeat: no-repeat;
+    background-image: url(../img/footer-sprite.png);
+}
+
+.footer-pay-systems:not(:first-child) {
+    margin-left: 5px;
+}
+
+.footer-pay-systems-paypal {
+    background-position: -2px -6px;
+}
+
+.footer-pay-systems-master-card {
+    background-position: -54px -8px;
+}
+
+.footer-pay-systems-visa {
+    background-position: -104px -8px;
+}
+
+.footer-pay-systems-yandex {
+    background-position: -154px -8px;
+}
+
+.footer-pay-systems-webmoney {
+    background-position: -2px -46px;
+}
+
+.footer-pay-systems-qiwi {
+    background-position: -52px -46px;
+}
+  
+.footer-social-links {
+    margin-top: 10px;
+}
+.footer-social-link {
+    display: inline-block;
+    width: 36px;
+    height: 36px;
+    margin: 0 5px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-image: url(../img/footer-sprite.png);
+}
+.footer-social-link-twitter {
+    background-position: -107px -42px;
+}
+
+.footer-social-link-vk {
+    background-position: -157px -42px;
+}
+
+.footer-social-link:hover {
+    cursor: pointer;
+}
+  
+.footer-copyright {
+    font-size: 0.8em;
+}
+  
+.footer-contacts-phone {
+    display: block;
+}
+  
+.footer-contacts-email {
+    display: block;
+}
+
+.footer-pay-col {
+    width: 25%;
+}

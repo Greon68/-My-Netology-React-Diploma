@@ -9,6 +9,8 @@ import { CatalogMenu } from "./CatalogMenu";
 import { CatalogPreview } from "./CatalogPreview";
 import { BASE_URL } from "../../config/api";
 
+import { fetchItemsWithQuery } from "../../loaders/loaders";
+
 import "./style.scss";
 import { Loader } from "../Loader/Loader";
 
@@ -62,32 +64,18 @@ export const Catalog = () => {
   //   .then((res) => res.json());
 
     // 2-й вариант:
-    const fetchItems = (category, query, offset) => 
-    fetch(`${BASE_URL}/api/items?categoryId=${category || ""}&q=${query}&offset=${offset}`)  
-    .then((response) => {
-        // Проверяем, успешно ли выполнен запрос (статус в диапазоне 200–299)
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      // Парсим ответ в формате JSON и возвращаем результат
-      return response.json();
+    // const fetchItems = (category, query, offset) => 
+    //   fetch(`${BASE_URL}/api/items?categoryId=${category || ""}&q=${query}&offset=${offset}`)  
+    //   .then((response) => {
+    //       // Проверяем, успешно ли выполнен запрос (статус в диапазоне 200–299)
+    //     if (!response.ok) {
+    //       throw new Error(`HTTP error! Status: ${response.status}`);
+    //     }
+    //     // Парсим ответ в формате JSON и возвращаем результат
+    //     return response.json();
     
-    });
+    // });
 
-    // **************************************************
-      // Обработка ошибок пр загрузке
-    // fetch('https://api.example.com/data')
-    // .then(response => {
-    //   // Проверяем, успешно ли выполнен запрос (статус в диапазоне 200–299)
-    //   if (!response.ok) {
-    //     throw new Error(`HTTP error! Status: ${response.status}`);
-    //   }
-    //   // Парсим ответ в формате JSON и возвращаем результат
-    //   return response.json();
-    // })
-    // .then(data => console.log(data))
-    // .catch(error => console.error('Fetch error:', error));
-    // ************************************************
 
   useEffect(() => {
     // При смене категории или поиска сбрасываем список и offset
@@ -101,7 +89,7 @@ export const Catalog = () => {
   useEffect(() => {
     if (loading) return;
     setLoading(true);
-    fetchItems(categoryId, searchQuery, offset)
+    fetchItemsWithQuery(categoryId, searchQuery, offset)
       .then((data) => {
         setItems((prev) => [...prev, ...data]);
         setHasMore(data.length === limit); 
@@ -184,7 +172,7 @@ export const Catalog = () => {
           )}
         </form>
 
-                  {/* Индикатор загрузки списка категорий */}
+      {/* Индикатор загрузки списка категорий */}
       {loadingCategories && (
           <div className="loading text-center">
             <h3> Загрузка списка категорий...</h3>

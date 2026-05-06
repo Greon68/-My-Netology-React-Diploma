@@ -1,5 +1,6 @@
 import { TopSales } from "./TopSales";
 import './style.scss'
+import { HomeCatalog } from "./HomeCatalog";
 
 
 export const HomePage =()=>{
@@ -15,9 +16,9 @@ export const HomePage =()=>{
             </section>
             <section className="catalog">
                 <h2 className="text-center">Каталог</h2>
+                <HomeCatalog/>
                 
                 
-                {/* <CatalogData/> */}
                 
             </section>
            

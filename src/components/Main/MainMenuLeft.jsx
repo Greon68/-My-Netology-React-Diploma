@@ -20,6 +20,7 @@ export const MainMenuLeft = () => {
       <NavLink className="main-menu-item" to={CONTACTS_ROUT}>
         Контакты
       </NavLink>
+      <h3>My-Diploma-React</h3>
     </div>
   );
 };

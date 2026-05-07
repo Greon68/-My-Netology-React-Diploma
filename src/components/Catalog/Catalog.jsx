@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
-// import { useCatalog } from "../../hook/useCatalog";
 import { useGetFetch } from "../../hook/useGetFetch";
 import { CatalogMenu } from "./CatalogMenu";
 import { CatalogPreview } from "./CatalogPreview";
@@ -93,9 +92,10 @@ export const Catalog = () => {
     setSearch((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Обработчик события Submit на форме поиска.
-  // При клике передаём значение из поля поиска формы в переменную
-  // поиска по фразе searchQuery:
+  /* Обработчик события Submit на форме поиска.
+      При клике передаём значение из поля поиска формы в переменную
+      поиска по фразе searchQuery:
+   */
   const onSearchSubmit = (e) => {
     e.preventDefault();
     setSearchQuery(search.title);
@@ -110,10 +110,6 @@ export const Catalog = () => {
     setCategoryId(item.id);
     // Обнуляем поисковую фразу:
     setSearchQuery("");
-
-    // Обнуляем поле поиска:
-    // setSearch({ title: "" });
-
     // Обнуляем offset:
     setOffset(0);
     // Выставляем в false флаг productNotAvailable :

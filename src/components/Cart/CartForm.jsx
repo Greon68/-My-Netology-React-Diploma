@@ -116,7 +116,6 @@ export const CartForm = (props) => {
     <>
       <section className="order">
         <h2 className="text-center">Оформить заказ</h2>
-        {/* <div className="card" style="max-width: 30rem; margin: 0 auto;"> */}
         <div
           className="card card-form"
           style={{ maxWidth: "130rem", margin: " 0 auto" }}
@@ -168,7 +167,6 @@ export const CartForm = (props) => {
           </form>
           {errorForm && <h3> Введите полные данные </h3>}
         </div>
-        {/* {successMessage  && <LoadSuccess/> } */}
       </section>
     </>
   );

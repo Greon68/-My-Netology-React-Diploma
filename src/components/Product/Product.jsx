@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { BASE_URL } from "../../config/api";
 import { SizesListPreview } from "./SizesListPreview";
-import { Cart } from "../Cart/Cart";
 import { ProductInfo } from "./ProductInfo";
 import { ProductImage } from "./ProductImage";
 import { useParams, useNavigate } from "react-router";
 import { CART_ROUT } from "../../router/routes";
+import { Loader } from "../Loader/Loader";
 
 export const Product = () => {
   const { id } = useParams();
@@ -23,22 +23,28 @@ export const Product = () => {
   const [sizeList, setSizeList] = useState([]);
   // Выбранный размер:
   const [selectedSize, setSelectedSize] = useState("");
-
-  // Показать/скрыть карзину товаров:
-  // const [showCart, setShowCart] = useState(false);
-
   // Подключаем навигацию:
   const navigate = useNavigate();
-
-  // Подключаемся к локальному хранилищу браузера:
+  // Подключаемся к локальному хранилищу браузера.
   // Состояние для массива объектов заказов:
   const [orders, setOrders] = useLocalStorage("orders", []);
+  // Отслеживание загрузки/ошибки :
+  const [loadingProduct, setLoadingProduct] = useState(false);
+  const [errorProduct, setErrorProduct] = useState("");
 
-  // Функция загрузки данных о текущем товарк по сети:
+  // Функция загрузки данных о текущем товаре по сети:
   const getProduct = async () => {
-    const resp = await fetch(`${BASE_URL}/api/items/${id}`);
-    if (resp.ok) {
+    setLoadingProduct(true);
+    setErrorProduct("");
+    try {
+      const resp = await fetch(`${BASE_URL}/api/items/${id}`);
+
       const data = await resp.json();
+
+      if (resp.status > 399) {
+        throw data;
+      }
+
       setProduct(data);
       // console.log("Объект товара data -", data);
 
@@ -58,9 +64,14 @@ export const Product = () => {
           }
         });
       }
+    } catch (error) {
+       setErrorProduct(error.message);
+    } finally {
+       setLoadingProduct(false);
     }
   };
 
+ 
   // Загружаем данные о текущем товаре при загрузке страницы:
   useEffect(() => {
     getProduct();
@@ -68,23 +79,23 @@ export const Product = () => {
 
   // Функция добавления заказа в LocalStorage:
   const addToOrderInLocalStorage = () => {
-  // Фиксируем пару "товар-размер" для текущего заказа:
-  const orderId = product.id + " : " + selectedSize;
-  // console.log('orderId-',orderId , 'typeOf orderId- ', typeof orderId );
+    // Фиксируем пару "товар-размер" для текущего заказа:
+    const orderId = product.id + " : " + selectedSize;
+    // console.log('orderId-',orderId , 'typeOf orderId- ', typeof orderId );
 
-  // Определяем полную стоимость для текущего заказа:
-  const priceTotal = product.price * count;
+    // Определяем полную стоимость для текущего заказа:
+    const priceTotal = product.price * count;
 
-  // Определяем , есть ли в хранилище заказ для данной пары:
-  const result = orders.find((order) => order.orderId === orderId);
-  console.log("result -", result);
+    // Определяем , есть ли в хранилище заказ для данной пары:
+    const result = orders.find((order) => order.orderId === orderId);
+    console.log("result -", result);
 
-  // Если уже есть , то повторно заказ не сохраняем в хранилище
-  if (result) {
+    // Если уже есть , то повторно заказ не сохраняем в хранилище
+    if (result) {
       return;
-  }
-  // Иначе, сохраняем объект заказа в localStorage и в переменной orders
-  else {
+    }
+    // Иначе, сохраняем объект заказа в localStorage и в переменной orders
+    else {
       setOrders([
         ...orders,
         {
@@ -141,6 +152,20 @@ export const Product = () => {
 
   return (
     <>
+      {/* Индикатор загрузки данных товара */}
+      {loadingProduct && (
+        <div className="loading text-center">
+          <h3> Загрузка данных товара ...</h3>
+          <Loader />
+        </div>
+      )}
+      {/* Вывод информации об ошибке загрузки данных товара */}
+      {errorProduct && (
+        <div className="text-center">
+          <h3> Ошибка загрузки данных товара ...</h3>
+        </div>
+      )}
+
       {product && (
         <section className="catalog-item">
           <h2 className="text-center">{product.title}</h2>
@@ -157,7 +182,7 @@ export const Product = () => {
                 <h3 className="text-center">Товара нет в наличии</h3>
               )}
 
-              {/* Если есть размеры в наличии: */}
+              {/* Если есть размеры в наличии ... */}
               {/* Список имеющихся в наличии размеров */}
               {sizesAvailable && (
                 <>
@@ -200,82 +225,3 @@ export const Product = () => {
   );
 };
 
-// {
-//     "id": 33,
-//     "category": 13,
-//     "title": "Знаменитые лабутэны",
-//     "images": [
-//       "https://raw.githubusercontent.com/netology-code/ra16-diploma/master/html/img/products/tufli_labuten.jpg",
-//       "https://raw.githubusercontent.com/netology-code/ra16-diploma/master/html/img/products/tufli_labuten_2.jpg"
-//     ],
-//     "sku": "1000013",
-//     "manufacturer": "Christian Louboutin",
-//     "color": "Черный",
-//     "material": "Лак",
-//     "reason": "Высокая мода",
-//     "season": "Лето",
-//     "heelSize": "9 см.",
-//     "price": 56000,
-//     "sizes": [
-//       {
-//         "size": "12 US",
-//         "available": true
-//       },
-//       {
-//         "size": "14 US",
-//         "available": false
-//       }
-//     ]
-//   }
-
-{
-  /* <section class="catalog-item">
-        <h2 class="text-center">Босоножки 'MYER'</h2>
-        <div class="row">
-            <div class="col-5">
-                <img src=".././img/products/sandals_myer.jpg"
-                    class="img-fluid" alt="">
-            </div>
-            <div class="col-7">
-                <table class="table table-bordered">
-                    <tbody>
-                        <tr>
-                            <td>Артикул</td>
-                            <td>1000046</td>
-                        </tr>
-                        <tr>
-                            <td>Производитель</td>
-                            <td>PAUL ANDREW</td>
-                        </tr>
-                        <tr>
-                            <td>Цвет</td>
-                            <td>Чёрный</td>
-                        </tr>
-                        <tr>
-                            <td>Материалы</td>
-                            <td>Кожа</td>
-                        </tr>
-                        <tr>
-                            <td>Сезон</td>
-                            <td>Лето</td>
-                        </tr>
-                        <tr>
-                            <td>Повод</td>
-                            <td>Прогулка</td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="text-center">
-                    <p>Размеры в наличии: <span class="catalog-item-size selected">18 US</span> <span class="catalog-item-size">20 US</span></p>
-                    <p>Количество: <span class="btn-group btn-group-sm pl-2">
-                            <button class="btn btn-secondary">-</button>
-                            <span class="btn btn-outline-primary">1</span>
-                            <button class="btn btn-secondary">+</button>
-                        </span>
-                    </p>
-                </div>
-                <button class="btn btn-danger btn-block btn-lg">В корзину</button>
-            </div>
-        </div>
-    </section> */
-}

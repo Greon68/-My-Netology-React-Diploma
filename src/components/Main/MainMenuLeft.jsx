@@ -8,9 +8,9 @@ export const MainMenuLeft = () => {
       <Link className="main-menu-item" to={"/"}>
         {<img src="../../../img/header-logo.png" />}
       </Link>
-      <Link className="main-menu-item" to={"/"}>
+      <NavLink className="main-menu-item" to={"/"}>
         Главная
-      </Link>
+      </NavLink>
       <NavLink to={CATALOG_ROUT} className="main-menu-item">
         Каталог
       </NavLink>
@@ -20,7 +20,6 @@ export const MainMenuLeft = () => {
       <NavLink className="main-menu-item" to={CONTACTS_ROUT}>
         Контакты
       </NavLink>
-      <h3>My-Diploma-React</h3>
     </div>
   );
 };

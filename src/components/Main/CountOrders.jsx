@@ -2,7 +2,7 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import './style.scss'
 
 export const CountOrders =()=>{
-    // Достаём из localStorage массив заказов orders:
+  // Достаём из localStorage массив заказов orders:
   const [orders, setOrders] = useLocalStorage("orders", []);
 
   return (

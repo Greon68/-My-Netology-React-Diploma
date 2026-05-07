@@ -6,14 +6,7 @@ import { CartTable } from "./CartTable";
 import { CartForm } from "./CartForm";
 import { LoadSuccess } from "./LoadSuccess";
 
-import { useLocation } from "react-router";
-
 export const Cart = () => {
-
-  // Работаем с useLocation:
-  // const location = useLocation();
-  // console.log("Cart location-", location);
-
   // Достаём из localStorage массив заказов orders:
   const [orders, setOrders] = useLocalStorage("orders", []);
 
@@ -48,11 +41,6 @@ export const Cart = () => {
     <>
       <section className="cart text-center">
         <h2 className="text-center">Корзина</h2>
-
-        {/* TEST: */}
-        {/* Получаю информацию через useLocation и вывожу её */}
-        {/* {location.state?.data && <h3>{location.state.data}</h3>} */}
-        
         {orders.length < 1 && (
           <h3 className="non-orders text-center"> В корзине нет товаров </h3>
         )}

@@ -19,18 +19,6 @@ export function useCatalog(categoryId = "", searchQuery = "", limit = 6) {
   }, [categoryId, searchQuery]);
 
   // Загрузка при изменении offset
-  //   useEffect(() => {
-  //     if (loading) return;
-  //     setLoading(true);
-  //     fetch(`/api/items?categoryId=${categoryId || ''}&q=${searchQuery}&offset=${offset}&limit=${limit}`)
-  //       .then(res => res.json())
-  //       .then(data => {
-  //         setItems(prev => [...prev, ...data.items]);
-  //         setHasMore(offset + data.items.length < data.total);
-  //       })
-  //       .finally(() => setLoading(false));
-  //   }, [offset, categoryId, searchQuery, limit]); // зависимости
-
   useEffect(() => {
     if (loading) return;
     setLoading(true);

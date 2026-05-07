@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router";
+import { Link } from "react-router";
 import { ABOUTE_ROUT, CATALOG_ROUT, CONTACTS_ROUT } from "../../router/routes";
 import './style.scss'
 

@@ -1,7 +1,6 @@
 /*  Компонент отрисовки карточки товарв */
 
 import { Link, NavLink } from "react-router";
-import { PRODUCT_ROUT } from "../../router/routes";
 import './style.scss'
 
 export const CardView = ({ images, title, price, category, id }) => {

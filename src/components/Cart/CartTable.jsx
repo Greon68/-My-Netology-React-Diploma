@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router";
+import "./style.scss";
 
 export const CartTable = (props) => {
   console.log("Cart table props-", props);
@@ -42,7 +44,9 @@ export const CartTable = (props) => {
             {orders.map((order, index) => (
               <tr key={order.orderId}>
                 <td scope="row">{index + 1}</td>
-                <td> {order.title} </td>
+                <td>
+                  <Link to={`/catalog/${order.id}`}>{order.title}</Link>
+                </td>
                 <td>{order.size}</td>
                 <td>{order.count}</td>
                 <td>{order.price}</td>

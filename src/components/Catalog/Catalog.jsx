@@ -1,24 +1,21 @@
+/* БАЗОВЫЙ КОМПОНЕНТ ДЛЯ РАБОТЫ С КАТАЛОГОМ ТОВАРОВ */
+
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
-// import { CatalogData } from "../Home/CatalogData"
-// import { CatalogSearchData } from "./CatalogSearchData";
-
 // import { useCatalog } from "../../hook/useCatalog";
 import { useGetFetch } from "../../hook/useGetFetch";
 import { CatalogMenu } from "./CatalogMenu";
 import { CatalogPreview } from "./CatalogPreview";
 import { BASE_URL } from "../../config/api";
-
+// Функция загрузки данных через fetch-запрос:
 import { fetchItemsWithQuery } from "../../loaders/loaders";
-
-import "./style.scss";
 import { Loader } from "../Loader/Loader";
+import "./style.scss";
 
-// 1-й вариант:
 export const Catalog = () => {
   // Загружаем список категорий:
   const [categories, loadingCategories, errorCategories] =
-    useGetFetch("/api/categories");   
+    useGetFetch("/api/categories");
 
   // Id dыбранной  категории:
   const [categoryId, setCategoryId] = useState(0);
@@ -39,73 +36,51 @@ export const Catalog = () => {
     title: "",
   });
   // Флаг : "В выбранной категории НЕТ НУЖНОГО ТОВАРА"  ???:
-  const [ productNotAvailable, setProductNotAvailable] = useState(false)
+  const [productNotAvailable, setProductNotAvailable] = useState(false);
   // Лимит на количество загружаемых за один запрос элементов:
-  const[limit]= useState(6);
+  const [limit] = useState(6);
   // Ошибка при загрузке данных о товарах
-  const[error, setError]= useState('');
+  const [error, setError] = useState("");
 
-    // Объект location из  useLocation()
-    let location = useLocation();
-    console.log("Catalog location - ", location);
-  
-    // Если получены данные из поля поиска главного меню,
-    // запишем их в search.title:
-    useEffect(() => {
-      // console.log("SearchCatalog location.state - ", location.state);
-      if (location.state?.valueSearch) {
-        setSearch({ title: location.state.valueSearch });
-      }
-    }, [location]);
+  // Объект location из  useLocation()
+  let location = useLocation();
+  console.log("Catalog location - ", location);
 
-  // Функция загрузки данных:
-  // const fetchItems = (category, query, offset) => 
-  //   fetch(`${BASE_URL}/api/items?categoryId=${category || ""}&q=${query}&offset=${offset}`)  
-  //   .then((res) => res.json());
-
-    // 2-й вариант:
-    // const fetchItems = (category, query, offset) => 
-    //   fetch(`${BASE_URL}/api/items?categoryId=${category || ""}&q=${query}&offset=${offset}`)  
-    //   .then((response) => {
-    //       // Проверяем, успешно ли выполнен запрос (статус в диапазоне 200–299)
-    //     if (!response.ok) {
-    //       throw new Error(`HTTP error! Status: ${response.status}`);
-    //     }
-    //     // Парсим ответ в формате JSON и возвращаем результат
-    //     return response.json();
-    
-    // });
-
+  // Если получены данные из поля поиска главного меню,
+  // запишем их в search.title:
+  useEffect(() => {
+    // console.log("SearchCatalog location.state - ", location.state);
+    if (location.state?.valueSearch) {
+      setSearch({ title: location.state.valueSearch });
+    }
+  }, [location]);
 
   useEffect(() => {
     // При смене категории или поиска сбрасываем список и offset
     setItems([]);
     setOffset(0);
     setHasMore(true);
-    setProductNotAvailable(false)
+    setProductNotAvailable(false);
   }, [categoryId, searchQuery]);
 
-//  Загрузка  данных при смене offset
+  //  Загрузка  данных при смене offset
   useEffect(() => {
     if (loading) return;
     setLoading(true);
     fetchItemsWithQuery(categoryId, searchQuery, offset)
       .then((data) => {
         setItems((prev) => [...prev, ...data]);
-        setHasMore(data.length === limit); 
+        setHasMore(data.length === limit);
         // Если при первой загрузки не находим ни одного товара из поля поиска ,
         // выводим информационное сообщение об этом:
-        setProductNotAvailable( offset===0 && data.length === 0  )
-
+        setProductNotAvailable(offset === 0 && data.length === 0);
       })
-      .catch(error =>setError(error.message))
+      .catch((error) => setError(error.message))
       .finally(() => setLoading(false));
-
   }, [offset, categoryId, searchQuery]);
 
-
-  //Обработчик клика на кнопку "Загрузить ещё".
- // Увеличиваем offset на значение limit:
+  // Обработчик клика на кнопку "Загрузить ещё".
+  // Увеличиваем offset на значение limit:
   const loadMore = () => {
     if (!loading && hasMore) {
       setOffset((prev) => prev + limit);
@@ -119,41 +94,41 @@ export const Catalog = () => {
   };
 
   // Обработчик события Submit на форме поиска.
-  // При клике передаём значение из поля поиска формы в переменную 
+  // При клике передаём значение из поля поиска формы в переменную
   // поиска по фразе searchQuery:
   const onSearchSubmit = (e) => {
     e.preventDefault();
-    setSearchQuery(search.title);  
+    setSearchQuery(search.title);
   };
 
   // Клик по кнопкам меню в категориях товаров
   const onSelectFilter = (item) => {
     console.log("onSelectFilter item -", item);
     //  Фиксируем выбранный объект категории в константу selected:
-    setSelected(item); 
-   // Вытаскиваем из выбранного объекта поле id и записываем в categoryId 
-    setCategoryId(item.id);    
+    setSelected(item);
+    // Вытаскиваем из выбранного объекта поле id и записываем в categoryId
+    setCategoryId(item.id);
     // Обнуляем поисковую фразу:
     setSearchQuery("");
+
     // Обнуляем поле поиска:
-    setSearch({ title: "" });
-    // Обнуляем offset: 
-    setOffset(0)
+    // setSearch({ title: "" });
+
+    // Обнуляем offset:
+    setOffset(0);
     // Выставляем в false флаг productNotAvailable :
-    setProductNotAvailable(false)
+    setProductNotAvailable(false);
   };
-  
+
   console.log("************************************");
   console.log("searchQuery -", searchQuery);
   console.log("offset-", offset);
   console.log("selected-", selected);
-  console.log("categoryId-", categoryId, );
+  console.log("categoryId-", categoryId);
   console.log("items -", items);
 
   return (
     <>
-
-      
       <div className="catalog">
         <h2 className="text-center title-block">Каталог</h2>
         <form className="catalog-search-form" onSubmit={onSearchSubmit}>
@@ -172,33 +147,32 @@ export const Catalog = () => {
           )}
         </form>
 
-      {/* Индикатор загрузки списка категорий */}
-      {loadingCategories && (
+        {/* Индикатор загрузки списка категорий */}
+        {loadingCategories && (
           <div className="loading text-center">
             <h3> Загрузка списка категорий...</h3>
-             <Loader/>
+            <Loader />
           </div>
-      )}
-      {/* Вывод информации об ошибке загрузки списка категорий */}
-      {errorCategories && (
-              <div className="text-center">
-                <h3>  Ошибка загрузки списка категорий...</h3>              
-              </div>
-      )}
-      {/* Индикатор загрузки списка товаров */}
-      {loading && (
-             <div className="loading text-center">
-                <h3> Загрузка списка товаров...</h3>
-                <Loader/>
-           </div>
-      )}
-      {/* Вывод информации об ошибке загрузки списка товаров */}
-      {error && (
-              <div className="text-center">
-                <h3>  Ошибка загрузки списка товаров...</h3>              
-              </div>
-      )}
-
+        )}
+        {/* Вывод информации об ошибке загрузки списка категорий */}
+        {errorCategories && (
+          <div className="text-center">
+            <h3> Ошибка загрузки списка категорий...</h3>
+          </div>
+        )}
+        {/* Индикатор загрузки списка товаров */}
+        {loading && (
+          <div className="loading text-center">
+            <h3> Загрузка списка товаров...</h3>
+            <Loader />
+          </div>
+        )}
+        {/* Вывод информации об ошибке загрузки списка товаров */}
+        {error && (
+          <div className="text-center">
+            <h3> Ошибка загрузки списка товаров...</h3>
+          </div>
+        )}
 
         <CatalogMenu
           categories={categories}
@@ -216,139 +190,12 @@ export const Catalog = () => {
           </div>
         )}
 
-        { productNotAvailable && (
-                  <div className="text-center">                   
-                      <h3>Искомого товара нет в данной категории</h3>
-                  </div>
-        ) }
+        {productNotAvailable && (
+          <div className="text-center">
+            <h3>Искомого товара нет в данной категории</h3>
+          </div>
+        )}
       </div>
     </>
   );
 };
-
-// // Обработка ошибок пр загрузке
-// fetch('https://api.example.com/data')
-//   .then(response => {
-//     // Проверяем, успешно ли выполнен запрос (статус в диапазоне 200–299)
-//     if (!response.ok) {
-//       throw new Error(`HTTP error! Status: ${response.status}`);
-//     }
-//     // Парсим ответ в формате JSON и возвращаем результат
-//     return response.json();
-//   })
-//   .then(data => console.log(data))
-//   .catch(error => console.error('Fetch error:', error));
-
-
-// // 2-й вариант - через хук useCatalog:
-// export const Catalog = () => {
-//   // Загружаем список категорий:
-//   // 1.Получаем список категорий (кнопок) :
-//   const [categories, loadingCategories, errorCategories] = useGetFetch("/api/categories");
-//   //2. Добавляем категорию "Все" в массив категорий
-//   //   useEffect(() => {
-//   //     if(categories){
-//   //         categories.unshift({ id: 1, title: "Все" });
-//   //     }
-//   //   }, []);
-
-//   // Id dыбранной  категории:
-//   const [categoryId, setCategoryId] = useState(null);
-
-//   // Выбранная категория товаров (объект):
-//   const [selected, setSelected] = useState({ id: 1, title: "Все" });
-
-//   //   **************************
-//   //   // БЕЗ useCatalog:
-//   //   // Список товаров:
-//   //   const [items, setItems] = useState([]);
-//   //   // Текущий offset:
-//   //   const [offset, setOffset] = useState(0);
-//   //   // Флаг для возможности срабатывания кнопки "Загрузить ещё":
-//   //   const [hasMore, setHasMore] = useState(true);
-//   //   //  Индикатор загрузки данных:
-//   //   const [loading, setLoading] = useState(false);
-//   // *************************************
-
-//   // Поисковая фраза:
-//   const [searchQuery, setSearchQuery] = useState("");
-
-//   // Данные в поле поиска формы
-//   const [search, setSearch] = useState({
-//     title: "",
-//   });
-
-//   // oбработчик onChange для поля поиска формы:
-//   const onSearchChange = (e) => {
-//     const { name, value } = e.target;
-//     setSearch((prev) => ({ ...prev, [name]: value }));
-//   };
-
-//   //Обработчик события Submit на форме поиска
-//   const onSearchSubmit = (e) => {
-//     e.preventDefault();
-//     setSearchQuery(search.title);
-//   };
-
-//   const onSelectFilter = (item) => {
-//     console.log("onSelectFilter item -", item);
-//     //  Фиксируем выбранный объект категории в константу selected:
-//     setSelected(item);
-//     if (item.id === 1) {
-//       setCategoryId(null);
-//     } else {
-//       setCategoryId(item.id);
-//     };
-//     // Обнуляем поисковую фразу:
-//     setSearchQuery('');
-//     // Обнуляем поле поиска:
-//     setSearch({title:''})
-//   };
-
-//   //Вызов useCatalog :
-//   const { items, loadingItems, hasMore, loadMore } = useCatalog(
-//     categoryId,
-//     searchQuery
-//   );
-
-//   console.log("searchQuery -", searchQuery);
-//   console.log("items -", items);
-//   //   console.log("categories-", categories);
-
-//   return (
-//     <>
-//       {loadingCategories && <div> Загрузка списка категорий...</div>}
-//       {errorCategories && <div> Ошибка загрузки списка категорий...</div>}
-//       <div className="catalog">
-//         <h2 className="text-center title-block">Каталог</h2>
-//         <form className="catalog-search-form" onSubmit={onSearchSubmit}>
-//           <input
-//             type="search"
-//             className="form-control"
-//             name="title"
-//             value={search.title}
-//             onChange={onSearchChange}
-//             placeholder="Поиск"
-//           />
-//           {search.title && (
-//             <button type="submit" className="button-catalog-search-form">
-//               Найти
-//             </button>
-//           )}
-//         </form>
-
-//         <CatalogMenu
-//           categories={categories}
-//           selected={selected}
-//           onSelectFilter={onSelectFilter}
-//         />
-//         <CatalogPreview previewList={items} />
-//         {hasMore &&
-//                 <div className="text-center">
-//                     <button className="button-more" onClick={loadMore}>Загрузить ещё</button>
-//                 </div>
-//         }
-//       </div>
-//     </>
-//   );
-// };

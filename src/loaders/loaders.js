@@ -15,7 +15,8 @@ export const fetchItemsWithQuery = (category, query, offset) =>
     return response.json();
   });
 
-// Запрос для компонента HomeCatalog ( без query):
+  
+// Запрос для компонента HomeCatalog ( без query ):
 export const fetchItems = (category, offset) =>
   fetch(
     `${BASE_URL}/api/items?categoryId=${category || ""}&offset=${offset}`

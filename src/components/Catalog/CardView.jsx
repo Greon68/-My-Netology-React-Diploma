@@ -13,7 +13,7 @@ export const CardView = ({ images, title, price, category, id }) => {
         <p className="card-text">{price} руб.</p>
         <p className="card-text">Id товара - {id}</p>
         <p className="card-text">Категория - {category}</p>
-
+        {/* При клике по кнопке "Заказать"  переходим в компонент товара Product : */}
         <Link
           to={`/catalog/${id}`}
           className="btn btn-outline-primary button-more "
@@ -25,14 +25,3 @@ export const CardView = ({ images, title, price, category, id }) => {
   );
 };
 
-{
-  /* <div class="card">
-                  <img src="./img/products/sandals_myer.jpg"
-                    class="card-img-top img-fluid" alt="Босоножки 'MYER'">
-                  <div class="card-body">
-                    <p class="card-text">Босоножки 'MYER'</p>
-                    <p class="card-text">34 000 руб.</p>
-                    <a href="/products/1.html" class="btn btn-outline-primary">Заказать</a>
-                  </div>
-</div> */
-}

@@ -10,10 +10,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-  }
+}
   
-  .top-sales-block {
-    display: flex;
-    justify-content: space-around
+.top-sales-block {
+  width: 100%;
+  display: flex; 
+  justify-content: space-around
   
-  }
+}

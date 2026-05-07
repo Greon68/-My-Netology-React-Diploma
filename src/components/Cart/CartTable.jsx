@@ -35,7 +35,7 @@ export const CartTable = (props) => {
               <th scope="col">Название</th>
               <th scope="col">Размер</th>
               <th scope="col">Кол-во</th>
-              <th scope="col">Стоимость</th>
+              <th scope="col">Стоимость 1 ед.</th>
               <th scope="col">Итого</th>
               <th scope="col">Действия</th>
             </tr>

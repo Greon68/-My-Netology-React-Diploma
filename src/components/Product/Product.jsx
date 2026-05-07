@@ -71,7 +71,6 @@ export const Product = () => {
     }
   };
 
- 
   // Загружаем данные о текущем товаре при загрузке страницы:
   useEffect(() => {
     getProduct();
@@ -83,16 +82,29 @@ export const Product = () => {
     const orderId = product.id + " : " + selectedSize;
     // console.log('orderId-',orderId , 'typeOf orderId- ', typeof orderId );
 
-    // Определяем полную стоимость для текущего заказа:
-    const priceTotal = product.price * count;
-
     // Определяем , есть ли в хранилище заказ для данной пары:
     const result = orders.find((order) => order.orderId === orderId);
     console.log("result -", result);
 
-    // Если уже есть , то повторно заказ не сохраняем в хранилище
+    /* 
+      Если уже есть , то суммируем количество и производим
+      перерасчёт для нового его значения:
+    */     
     if (result) {
-      return;
+      setOrders( orders.map ( order => 
+        order.orderId === result.orderId ?
+          {
+            orderId: orderId,
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            size: selectedSize,
+            count: count + order.count,
+            priceTotal: product.price * ( count + order.count )
+          } 
+          : order
+         ))
+
     }
     // Иначе, сохраняем объект заказа в localStorage и в переменной orders
     else {
@@ -105,11 +117,13 @@ export const Product = () => {
           price: product.price,
           size: selectedSize,
           count: count,
-          priceTotal: priceTotal,
+          // priceTotal: priceTotal,
+          priceTotal: product.price * count
         },
       ]);
-    }
+    } 
   };
+
 
   //   Счётчики количества товара:
   // +1 :

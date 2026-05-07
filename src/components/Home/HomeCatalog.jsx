@@ -66,11 +66,11 @@ export const HomeCatalog = () => {
     setOffset(0);
   };
 
-  // console.log("************************************");
-  // console.log("offset-", offset);
-  // console.log("selected-", selected);
-  // console.log("categoryId-", categoryId);
-  // console.log("items -", items);
+  console.log("************************************");
+  console.log("offset-", offset);
+  console.log("selected-", selected);
+  console.log("categoryId-", categoryId);
+  console.log("items -", items);
 
   return (
     <>

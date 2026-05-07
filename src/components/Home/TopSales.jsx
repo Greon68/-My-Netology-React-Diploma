@@ -8,7 +8,7 @@ import "./style.scss";
 export const TopSales = () => {
   const [sales, loading, error] = useGetFetch("/api/top-sales");
 
-  console.log(" TopSales sales -", sales);
+  // console.log(" TopSales sales -", sales);
 
   return (
     <div className="top-sales-block">
